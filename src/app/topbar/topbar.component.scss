@@ -1,0 +1,22 @@
+@import '../../globals/style.scss';
+
+.tb-base {
+    display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: $pixi-topbar-gheight;
+	background-color: $pixi-base-color;
+}
+
+.tb-base-subdiv {
+	flex: 1;
+	color: white;
+};	
+
+
+.tb-base-title {
+    text-align: center;
+	color: $pixi-second-color;
+	line-height: $pixi-topbar-gheight;
+	font-size: 2.1em;    
+}
