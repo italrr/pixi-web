@@ -3,6 +3,7 @@ import { Subscription } from "rxjs";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ContentService } from 'src/app/services/content.service';
 import { bypassSanitizationTrustResourceUrl } from '@angular/core/src/sanitization/bypass';
+import { Content } from 'src/app/models/Content';
 
 
 @Component({
@@ -15,13 +16,13 @@ import { bypassSanitizationTrustResourceUrl } from '@angular/core/src/sanitizati
 })
 export class ViewChannel {
 
-
 	constructor(
 		private route: ActivatedRoute,
 		private router: Router,
 		private contentService: ContentService
 	) { }
 
+	private contents: Content[] = []
 	private lastScrollIndex: number = 0;
 	private lastScrollDir: string = 'downwards';
 	private lastFetchTimeout: number = new Date().getTime();
@@ -67,6 +68,7 @@ export class ViewChannel {
 			}
 			this.lastFetchTimeout = new Date().getTime();
 			this.contentService.get('misc', this.from, this.many, this.desc, this.sort).subscribe((data) => {
+				console.log(data)
 				resolve();
 			});
 			
