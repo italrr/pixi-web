@@ -1,0 +1,51 @@
+@import '../../../globals/style.scss';
+
+
+.about-base {
+	display: block;	
+	width: 100%;
+	overflow: auto;
+}
+
+.about-top {
+	width: 100%;
+	display: flex;
+}
+
+.about-title {
+	font-size: 2.5em;
+	margin-top: 64px;
+	margin-bottom: 64px;
+    display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.about-title-pixi {
+    color: $pixi-second-color;
+    font-weight: bold;    
+}
+
+.about-bottom {
+	display: flex;
+	width: 100%;
+	margin-bottom: 200px;
+
+}
+
+.about-text {
+	display: block;
+    width: 50%;
+    font-size:1.0em;
+	text-align: justify;
+	text-justify: inter-word;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.about-subtitle {
+    display: block;
+    font-size:1.2em;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
