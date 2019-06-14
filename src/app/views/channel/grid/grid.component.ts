@@ -1,19 +1,22 @@
 import { Component, Input, HostListener } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ActivatedRoute, Params, Router } from "@angular/router";
+import { Content } from 'src/app/models/Content';
 
 
 @Component({
-	selector: "view-about",
-	templateUrl: "./about.component.html",
-	styleUrls: ["./about.component.scss"]
+	selector: "view-grid",
+	templateUrl: "./grid.component.html",
+	styleUrls: ["./grid.component.scss"]
 })
-export class ViewAbout {
+export class ViewGrid {
 
 	constructor(
 		private route: ActivatedRoute,
 		private router: Router
-	) { }
+    ) { }
+    
+    @Input('contents') contents: Content[];
 
 	ngOnInit() {
 		const me = this;

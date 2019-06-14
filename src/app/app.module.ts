@@ -6,11 +6,32 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app/app.component';
 import { TopbarComponent } from './topbar/topbar.component';
+import 'hammerjs';
+// Mat
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 // Views
 import { ViewAbout } from './views/about/about.component';
 import { ViewChannel } from './views/channel/channel.component';
+import { ViewPost } from './views/post/post.component';
+import { ViewList } from './views/channel/list/list.component';
+import { ViewGrid } from './views/channel/grid/grid.component';
 // Services
 import { ContentService } from './services/content.service';
+import { ChannelService } from './services/channel.service';
+
 
 const appRoutes: Routes = [
   { 
@@ -29,19 +50,37 @@ const appRoutes: Routes = [
     AppComponent,
     TopbarComponent,
     ViewAbout,
-    ViewChannel
+    ViewChannel,
+    ViewList,
+    ViewGrid,
+    ViewPost
   ],
   imports: [
     HttpModule,
     HttpClientModule,    
     BrowserModule,
     AppRoutingModule,
+    // Mat
+    BrowserAnimationsModule,
+    MatTooltipModule,
+    MatMenuModule,
+    MatSliderModule,
+    MatButtonModule,
+    MatRadioModule,
+    MatDialogModule,
+    MatIconModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    MatCheckboxModule,
+    MatSnackBarModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true }
-    )    
+    )
   ],
-  providers: [ ContentService ],
+  providers: [ ContentService, ChannelService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

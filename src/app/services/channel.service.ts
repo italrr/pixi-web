@@ -8,20 +8,16 @@ import 'rxjs/add/observable/throw';
 import {environment }from "../../environments/environment"; 
 
 @Injectable()
-export class ContentService {
+export class ChannelService {
 
   constructor(private http: HttpClient) {
 
   }
   
-  get(ch: string, from: number | string, many: number, desc: boolean, sort: string): Observable <any>  {
+  get(ch: string): Observable <any>  {
 		const header = new HttpHeaders(); 
-    const params = new HttpParams().append("channel", ch)
-    .append("from", from.toString())
-    .append("many", many.toString())
-    .append("desc", desc.toString())
-    .append("sort", sort.toString());
-		return this.http.get(environment.endpoints.CONTENT_GET,  { headers: header, params: params }); 	
+    const params = new HttpParams().append("name", ch);
+		return this.http.get(environment.endpoints.CHANNEL_GET,  { headers: header, params: params }); 	
   }
 
 }

@@ -1,0 +1,12 @@
+    
+<div class="list-middle">
+	<div class="list-list" *ngFor="let content of contents">
+		<div class="list-each">
+			<view-post [content]="content"></view-post>
+		</div>
+	</div>
+	<!-- <div style="display: flex; width: 100%; flex-direction: column;" *ngIf="nothingToShow">
+		<span class="list-empty-msg">Woops. This listnel is empty.</span>
+		<span class="list-empty-msg-subt">Be the first one to post!</span>
+	</div> -->
+</div>

@@ -1,4 +1,40 @@
 $pixi-base-color: #151518;
+$pixi-title-color: #ffd467;
 $pixi-second-color: #df3934;
+$pixi-third-color: #3936f7;
+$pixi-fourth-color: #1cd158;
+$pixi-fith-color: #F5F5F5;
 $pixi-text-color: #fff;
 $pixi-topbar-gheight: 55px;
+
+.blue-button {
+    background-color: $pixi-third-color !important;
+    color: $pixi-text-color;
+}
+
+.red-button {
+    background-color: $pixi-second-color !important;
+    color: $pixi-text-color;   
+}
+
+.black-button {
+    background-color: $pixi-base-color !important;
+    color: $pixi-text-color;   
+}
+
+.regular-button {
+    background-color: rgb(204, 204, 204) !important;
+    color:black;      
+}
+
+.pixi-base-color-button {
+	background-color: $pixi-base-color;
+	border: 0px solid transparent;
+	// border-radius: 16px;
+}
+
+.pixi-base-color-button:hover {
+    background-color: lighten($pixi-base-color, 8.0);
+	transition: background-color 0.5s;
+	// border-radius: 16px;	
+}
