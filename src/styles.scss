@@ -46,9 +46,16 @@ $theme: mat-light-theme($primary, $accent, $warn);
 @include angular-material-theme($theme);
 
 body {
+  width: 100%;
+  height: 100vh;
 	margin: 0px;
 	padding: 0px;
 	font-family: 'MontserratRegular';
+}
+
+* {
+  margin: 0px;
+	padding: 0px;
 }
 
 @font-face {

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component,HostListener } from '@angular/core';
+import { SessionBus } from '../services/sessionbus.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'pixi-web';
+
+  constructor(private sessionBus: SessionBus){
+
+  }
+
+	@HostListener('scroll', ['$event'])
+  onScroll(event){
+    const me = this;
+    me.sessionBus.announce({ event: "Scroll", data: event });
+  }
 }

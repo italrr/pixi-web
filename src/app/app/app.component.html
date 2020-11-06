@@ -1,5 +1,7 @@
     
 <div class="base">
-	<topbar-component></topbar-component>
-    <router-outlet></router-outlet>
+    <topbar-component></topbar-component>
+    <div (scroll)="onScroll($event)" class="inner">
+        <router-outlet></router-outlet>        
+    </div>
 </div>

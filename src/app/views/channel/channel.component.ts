@@ -24,6 +24,7 @@ export class ViewChannel {
 	private lastScrollDir: string = 'downwards';
 	private lastFetchTimeout: number = 0;
 	private from: string | number = 0;
+	private start: number | null = null;
 	private many: number = 10;
 	private sort: string = 'PN';
 	private routingSubs: Subscription;
@@ -46,11 +47,41 @@ export class ViewChannel {
 					me.maxBuffer = me.listView ? 25 : 50;
 					me.fetch();
 				}				
+				if(data.event == "Scroll"){
+					let event = data.data;
+					const min = event.target.offsetHeight;
+					const current = event.target.offsetHeight + event.target.scrollTop;
+					const max = event.target.scrollHeight;
+			
+					console.log("xD");
+			
+					if(this.lastScrollIndex - current < 0){
+						this.lastScrollDir = 'downwards';
+					}else
+					if(this.lastScrollIndex - current > 0){
+						this.lastScrollDir = 'upwards';
+					}
+					if(current > max * 0.75 && this.lastScrollDir == 'downwards'){
+						this.fetch(true);
+					}else
+					if(current < min * 1.25 && this.lastScrollDir == 'upwards'){
+						this.fetch(false);
+					}
+					this.lastScrollIndex = current;					
+				}
 			},
 			error => {
 
 			}
 		);
+		this.route.fragment.subscribe((fragment: string) => {
+			if(!fragment){
+				return;
+			}
+			me.contents = [];
+			me.start = parseInt(fragment);
+			me.fetch();
+		})		
 
 	}
 
@@ -66,27 +97,6 @@ export class ViewChannel {
 		});
 	}
 
-	@HostListener('scroll', ['$event'])
-    onScroll(event){
-		const min = event.target.offsetHeight;
-		const current = event.target.offsetHeight + event.target.scrollTop;
-		const max = event.target.scrollHeight;
-
-		if(this.lastScrollIndex - current < 0){
-			this.lastScrollDir = 'downwards';
-		}else
-		if(this.lastScrollIndex - current > 0){
-			this.lastScrollDir = 'upwards';
-		}
-		if(current > max * 0.75 && this.lastScrollDir == 'downwards'){
-			this.fetch(true);
-		}else
-		if(current < min * 1.25 && this.lastScrollDir == 'upwards'){
-			this.fetch(false);
-		}
-		this.lastScrollIndex = current;
-    }	
-	
 	public getHighestPostNumber(): number {
 		let highest = 0;
 		for(let i = 0; i < this.contents.length; ++i){
@@ -121,7 +131,13 @@ export class ViewChannel {
 				return;
 			}
 			me.lastFetchTimeout = new Date().getTime();
-			me.from = downwards ? me.getHighestPostNumber() + 1 : me.getLowestPostNumber() - 1;
+			let jumpTo = 0;
+			if(me.start){
+				jumpTo = this.start;
+				me.start -= 5;
+				if(me.start < 1) me.start = 1;
+			}
+			me.from = me.start ? me.start : (downwards ? me.getHighestPostNumber() + 1 : me.getLowestPostNumber() - 1);
 			me.contentService.get(me.channel.name, me.from, me.many, downwards, me.sort).subscribe((data: Content[]) => {
 				// TODO: implement inverted order for PN
 				switch(me.sort){
@@ -143,7 +159,14 @@ export class ViewChannel {
 							}
 						}
 						break;
-				}
+				}			
+				setTimeout(() => {
+					if(this.start){
+						let post = document.getElementById('post-'+jumpTo);
+						post.scrollIntoView();
+						this.start = null;
+					}	
+				}, 100);
 				resolve();
 			});
 			
