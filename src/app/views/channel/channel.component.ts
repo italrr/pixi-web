@@ -5,6 +5,7 @@ import { ContentService } from 'src/app/services/content.service';
 import { Content } from 'src/app/models/Content';
 import { Channel } from 'src/app/models/Channel';
 import { ChannelService } from 'src/app/services/channel.service';
+import { SessionBus } from 'src/app/services/sessionbus.service';
 
 
 @Component({
@@ -17,14 +18,7 @@ import { ChannelService } from 'src/app/services/channel.service';
 })
 export class ViewChannel {
 
-	constructor(
-		private route: ActivatedRoute,
-		private router: Router,
-		private contentService: ContentService,
-		private channelService: ChannelService,
-		private activatedRoute: ActivatedRoute
-	) { }
-
+	private listView: boolean = true;
 	private contents: Content[] = []
 	private lastScrollIndex: number = 0;
 	private lastScrollDir: string = 'downwards';
@@ -34,21 +28,46 @@ export class ViewChannel {
 	private sort: string = 'PN';
 	private routingSubs: Subscription;
 	private channel: Channel;
-	private maxBuffer: number = 100; // max number of posts on the screen
+	private maxBuffer: number = 25; // max number of posts on the screen
+
+	constructor(
+		private route: ActivatedRoute,
+		private router: Router,
+		private contentService: ContentService,
+		private channelService: ChannelService,
+		private activatedRoute: ActivatedRoute,
+		private sessionBus: SessionBus
+	) { 
+		const me = this;
+		sessionBus.listen.subscribe(
+			data => {
+				if(data.event == "SwitchView"){
+					me.listView = data.data;
+					me.maxBuffer = me.listView ? 25 : 50;
+					me.fetch();
+				}				
+			},
+			error => {
+
+			}
+		);
+
+	}
 
 	ngOnInit() {
 		const me = this;
 		me.routingSubs = me.activatedRoute.params.subscribe((params: Params) => {
 			let chan = params["channel"];
 			me.channelService.get(chan).subscribe((data) => {
+				me.sessionBus.announce({ event: "ChannelChange", data });
 				me.channel = data;
 				me.fetch();
 			});
 		});
 	}
 
-	@HostListener('scroll', ['$event']) 
-    onScroll(event) {
+	@HostListener('scroll', ['$event'])
+    onScroll(event){
 		const min = event.target.offsetHeight;
 		const current = event.target.offsetHeight + event.target.scrollTop;
 		const max = event.target.scrollHeight;
@@ -109,7 +128,7 @@ export class ViewChannel {
 					case 'PN':
 						data = data.sort((a: Content, b: Content) => {
 							return downwards ? a.orderId - b.orderId : b.orderId - a.orderId;
-						})
+						});
 						for(let i = 0; i < data.length; ++i){
 							let index = downwards ? me.contents.length : 0;
 							me.contents.splice(index, 0, data[i]);

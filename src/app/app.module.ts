@@ -25,12 +25,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 // Views
 import { ViewAbout } from './views/about/about.component';
 import { ViewChannel } from './views/channel/channel.component';
+import { ViewRegister } from './views/register/register.component';
 import { ViewPost } from './views/post/post.component';
 import { ViewList } from './views/channel/list/list.component';
 import { ViewGrid } from './views/channel/grid/grid.component';
 // Services
 import { ContentService } from './services/content.service';
 import { ChannelService } from './services/channel.service';
+import { SessionBus } from './services/sessionbus.service';
 
 
 const appRoutes: Routes = [
@@ -41,7 +43,11 @@ const appRoutes: Routes = [
   { 
     path: 'ch/:channel',
     component: ViewChannel
-  }  
+  },
+  { 
+    path: 'register',
+    component: ViewRegister
+  }    
 ];
 
 
@@ -51,6 +57,7 @@ const appRoutes: Routes = [
     TopbarComponent,
     ViewAbout,
     ViewChannel,
+    ViewRegister,
     ViewList,
     ViewGrid,
     ViewPost
@@ -80,7 +87,7 @@ const appRoutes: Routes = [
       { enableTracing: true }
     )
   ],
-  providers: [ ContentService, ChannelService ],
+  providers: [ ContentService, ChannelService, SessionBus ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

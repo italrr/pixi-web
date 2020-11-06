@@ -1,3 +1,4 @@
-<div class="chan-base" (scroll)="onScroll($event)" >
-    <view-list [contents]="contents"></view-list>
+<div class="chan-base" (scroll)="onScroll($event)">
+    <view-list *ngIf="listView" [contents]="contents"></view-list>
+    <view-grid *ngIf="!listView" [contents]="contents"></view-grid>
 </div>

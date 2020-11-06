@@ -6,8 +6,7 @@
         <span class="post-title-right">
             <span matTooltipPosition="above" matTooltip="Post #{{content.orderId}} of this Channel" class="order-id">#{{content.orderId}}</span> 
             &nbsp;&nbsp;|&nbsp;&nbsp;
-            <!-- <span matTooltipPosition="above" matTooltip="{{getFullDate(content.date)}}">0</span> -->
-            <span matTooltipPosition="above" matTooltip="0">0</span>
+            <span matTooltipPosition="above" matTooltip="{{getFullDate(content.date)}}">{{callMoment(content.date)}}</span>
         </span> 		
 	</div>
 	<!-- MIDDLE -->
@@ -44,8 +43,7 @@
         <!-- COMMENTS -->
         <span class="comments-button">
             <i class="fa fa-comments" aria-hidden="true"></i>
-            <!--({{callNumeral(content.comments)}}) -->
-			(0)
+            ({{callNumeral(content.comments)}})
         </span> 
 
 	</div>

@@ -1,12 +1,43 @@
 <div class="tb-base">
     <!-- LEFT -->
-    <div title="What is Pixi?" class="tb-base-subdiv tb-base-title">
-        Pixi
+    <div class="tb-base-subdiv tb-base-title">
+        <span title="What's Pixi?" style="cursor:pointer;" (click)="goToAbout()">Pixi</span>
     </div>
     <!-- CENTER -->
     <div class="tb-base-subdiv">
+        <div class="tb-base-middle-channel">
+            <div class="tb-base-space-filler"></div>
+            <div *ngIf="channel!=null" class="tb-base-middle-center">
+                #{{channel.name}}
+                <span (click)="onUpload()" matTooltipPosition="below" matTooltip="Upload Image/Video to #{{channel.name}}" class="tb-base-button">
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+                </span>        
+                <span (click)="onSortfilter()" matTooltipPosition="below" matTooltip="Sort/Filter Content" class="tb-base-button">
+                    <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
+                </span>    
+                <span (click)="onSwitchView()" matTooltipPosition="below" [matTooltip]="listView ? 'Mosaic View' : 'List View'" class="tb-base-button">
+                    <i class="fa " [ngClass]="{'fa-th': listView, 'fa-square': !listView }" aria-hidden="true"></i>
+                </span>                              
+            </div>
+            <div class="tb-base-space-filler"></div>
+        </div>
     </div>
     <!-- RIGHT -->
     <div class="tb-base-subdiv">
-    </div>
+        <div class="tb-base-middle-channel">
+            <div class="tb-base-space-filler"></div>
+            <div class="tb-base-middle-center">
+                <span (click)="onSearch()" class="tb-base-button" matTooltipPosition="below" matTooltip="Search">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </span>
+                <span (click)="onNotifications()" class="tb-base-button" matTooltipPosition="below" matTooltip="Notifications">
+                    <i class="fa fa-bell" aria-hidden="true"></i>
+                </span>
+                <span (click)="onUser()" class="tb-base-user-button" matTooltipPosition="below" matTooltip="Log in">
+                    <i class="fa fa-user" aria-hidden="true"></i> pepper
+                </span>  
+            </div>
+            <div class="tb-base-space-filler"></div>
+        </div>
+    </div>        
 </div>

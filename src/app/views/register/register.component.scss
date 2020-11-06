@@ -1,0 +1,43 @@
+@import '../../../globals/style.scss';
+
+$radius: 2px;
+
+.register-base {
+	width: 100%;
+	min-height: 600px;
+	display: flex;
+}
+
+.register-inner {
+	display: block;
+	margin: auto;	
+}
+
+.register-form {
+	display: block;
+	background-color: $pixi-fith-color;
+	min-width: 200px;
+	min-height: 200px;
+	max-width: 400px;
+	border-radius: $radius;
+	box-shadow: 2px 2px 2px lighten(black, 80.0);
+}
+
+.register-title {
+	text-align: center;
+	font-size: 200%;
+	margin-top: 64px;
+	margin-bottom: 64px;
+	color: $pixi-second-color;
+}
+
+.register-form-fields {
+	display: flex;
+}
+
+
+.register-form-input {
+	width: 300px;
+	display: block;
+	margin: 4px auto;
+}
