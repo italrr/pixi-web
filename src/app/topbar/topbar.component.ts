@@ -44,6 +44,10 @@ export class TopbarComponent {
     me.sessionBus.announce({ event: "SwitchView", data: me.listView });
   }
 
+  private onMenu(){
+
+  }
+
   private onUpload(){
 
   }

@@ -51,10 +51,7 @@ export class ViewChannel {
 					let event = data.data;
 					const min = event.target.offsetHeight;
 					const current = event.target.offsetHeight + event.target.scrollTop;
-					const max = event.target.scrollHeight;
-			
-					console.log("xD");
-			
+					const max = event.target.scrollHeight;	
 					if(this.lastScrollIndex - current < 0){
 						this.lastScrollDir = 'downwards';
 					}else
@@ -138,7 +135,7 @@ export class ViewChannel {
 				if(me.start < 1) me.start = 1;
 			}
 			me.from = me.start ? me.start : (downwards ? me.getHighestPostNumber() + 1 : me.getLowestPostNumber() - 1);
-			me.contentService.get(me.channel.name, me.from, me.many, downwards, me.sort).subscribe((data: Content[]) => {
+			me.contentService.getMany(me.channel.name, me.from, me.many, downwards, me.sort).subscribe((data: Content[]) => {
 				// TODO: implement inverted order for PN
 				switch(me.sort){
 					case 'PN':
@@ -161,10 +158,13 @@ export class ViewChannel {
 						break;
 				}			
 				setTimeout(() => {
-					if(this.start){
+					if(me.start){
 						let post = document.getElementById('post-'+jumpTo);
+						me.start = null;
+						if(!post){
+							return;
+						}
 						post.scrollIntoView();
-						this.start = null;
 					}	
 				}, 100);
 				resolve();

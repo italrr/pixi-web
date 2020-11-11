@@ -14,13 +14,19 @@ export class ContentService {
 
   }
   
-  get(ch: string, from: number | string, many: number, desc: boolean, sort: string): Observable <any>  {
+  getMany(ch: string, from: number | string, many: number, desc: boolean, sort: string): Observable <any>  {
 		const header = new HttpHeaders(); 
     const params = new HttpParams().append("channel", ch)
     .append("from", from.toString())
     .append("many", many.toString())
     .append("desc", desc.toString())
     .append("sort", sort.toString());
+		return this.http.get(environment.endpoints.CONTENT_GET_MANY,  { headers: header, params: params }); 	
+  }
+  
+  get(id: string): Observable <any> {
+		const header = new HttpHeaders(); 
+    const params = new HttpParams().append("uniqueId", id);
 		return this.http.get(environment.endpoints.CONTENT_GET,  { headers: header, params: params }); 	
   }
 

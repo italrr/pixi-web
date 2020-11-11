@@ -3,7 +3,7 @@
 
 		<div class="grid-list" *ngFor="let content of contents">
 			<div class="grid-each">
-				<view-post id="{{ 'post-' + content.orderId }}" [content]="content"></view-post>
+				<component-post id="{{ 'post-' + content.orderId }}" [channel]="channel" [content]="content"></component-post>
 			</div>
 		</div>
 		<!-- <div style="display: flex; width: 100%; flex-direction: column;" *ngIf="nothingToShow">

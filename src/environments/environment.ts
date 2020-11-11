@@ -19,6 +19,7 @@ export const environment = {
     PERSONA_CREATE: `${host}${baseUrl}/persona/create`,    
     // content
     CONTENT_GET: `${host}${baseUrl}/content/get`,
+    CONTENT_GET_MANY: `${host}${baseUrl}/content/getMany`,
     CONTENT_CREATE: `${host}${baseUrl}/content/create`,
     // auth
     AUTH_LOGIN: `${host}${baseUrl}/auth/login`,

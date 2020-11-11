@@ -5,7 +5,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app/app.component';
-import { TopbarComponent } from './topbar/topbar.component';
 import 'hammerjs';
 // Mat
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,13 +21,18 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+// Components
+import { TopbarComponent } from './topbar/topbar.component';
+import { ComponentPost } from './post/post.component';
+
 // Views
 import { ViewAbout } from './views/about/about.component';
 import { ViewChannel } from './views/channel/channel.component';
 import { ViewRegister } from './views/register/register.component';
-import { ViewPost } from './views/post/post.component';
 import { ViewList } from './views/channel/list/list.component';
 import { ViewGrid } from './views/channel/grid/grid.component';
+import { ViewPost } from './views/post/post.component';
+
 // Services
 import { ContentService } from './services/content.service';
 import { ChannelService } from './services/channel.service';
@@ -47,7 +51,11 @@ const appRoutes: Routes = [
   { 
     path: 'register',
     component: ViewRegister
-  }    
+  },
+  { 
+    path: 'ch/:channel/:post',
+    component: ViewPost
+  }     
 ];
 
 
@@ -55,6 +63,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     TopbarComponent,
+    ComponentPost,
     ViewAbout,
     ViewChannel,
     ViewRegister,

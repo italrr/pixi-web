@@ -1,0 +1,55 @@
+<!-- COMPLETE  -->
+<div *ngIf="!compat" class="post-base">
+	<!-- HEADER -->
+	<div class="post-header">
+		<span class="post-title"><a class="post-title-clickeable" href="{{ '/ch/' + channel.name + '/' + content.uniqueId }}" target="_blank">{{content.title}}</a></span>
+        <span class="post-title-right">
+            <span matTooltipPosition="above" matTooltip="Post #{{content.orderId}} of this Channel" class="order-id">#{{content.orderId}}</span> 
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <span matTooltipPosition="above" matTooltip="{{getFullDate(content.date)}}">{{callMoment(content.date)}}</span>
+        </span> 		
+	</div>
+	<!-- MIDDLE -->
+	<div class="post-middle">
+		<img class="post-img" src="{{getSourceURL()}}"/>
+		<!--<div>
+			<mat-progress-spinner *ngIf="content.loaded === undefined" mode="indeterminate"></mat-progress-spinner>
+		</div>-->
+	</div>
+	<!-- BOTTOM -->
+	<div class="post-bottom">
+        <!-- POINTS -->
+        <span (click)="onDownvote()" class="post-button">
+            <i class="fa" [ngClass]="{'fa-thumbs-down': isDisliked(), 'fa-thumbs-o-down': !isDisliked()}" aria-hidden="true"></i>
+        </span>
+        <span class="post-points">
+            0
+        </span>
+        <span (click)="onUpvote()" class="post-button">
+            <i class="fa" [ngClass]="{'fa-thumbs-up': isLiked(), 'fa-thumbs-o-up': !isLiked() }" aria-hidden="true"></i>
+        </span>  
+
+        <!--BY-->
+        <span matTooltip="Check Profile" class="post-uploader">
+            <span style="font-weight:bold;">{{content.persona.nick}}</span>
+        </span>
+
+
+        <!--SHARE-->
+        <span matTooltip="Share" class="post-share">
+            <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+
+        <!-- COMMENTS -->
+        <span *ngIf="!noComment" class="comments-button">
+            <i class="fa fa-comments" aria-hidden="true"></i>
+            ({{callNumeral(content.comments)}})
+        </span> 
+
+	</div>
+</div>
+
+<!-- COMPAT -->
+<div *ngIf="compat">
+    {{content.title}}
+</div>
