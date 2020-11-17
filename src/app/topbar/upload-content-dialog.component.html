@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>Upload to <span class="ucd-title">#{{channel.name}}</span></h1>
+<div mat-dialog-content>
+
+  <div style="min-width: 500px; margin-bottom: 15px; margin-top: 15px;">
+    
+
+    <div style="display: block; margin: 0px; padding: 0px;">
+      <mat-form-field style="display: block; width: 100%;">
+        <mat-label>Title</mat-label>
+        <input matInput value="" [formControl]="titleFormControl" [errorStateMatcher]="matcher">
+
+        <mat-error *ngIf="titleFormControl.hasError('required')">
+            Title can't be empty.
+        </mat-error> 
+        <mat-error *ngIf="!titleFormControl.hasError('required') && !titleFormControl.hasError('minLength')">
+            Title must be at least 3 characters long.
+        </mat-error>  
+
+      </mat-form-field>      
+    </div>
+    
+    <div style="display: block; margin: 0px; padding: 0px;">
+      <div style="width: 100%; display:flex; flex-direction: row;">
+        <div style="display: inline-block; flex: 1; "></div>
+        <input #imgInput hidden="true" type="file" onclick="this.value=null" (change)="imgInputChange($event)" accept=".png,.bmp,.gif,.jpeg,.jpg"/>
+        <button mat-button color="accent" (click)="imgInput.click()">Select Image/Video</button>
+        <div style="display: inline-block; flex: 1; "></div>
+      </div>
+    </div>
+
+    <div class="ucd-preview-outter" #previewimagecv>
+      <img class="ucd-preview-img" (load)="imgOnLoad()" #previewimage/>
+    </div>
+    <mat-error style="margin-bottom:5px;" *ngIf="showImageError">
+      Choose an image to upload
+    </mat-error>  
+    <mat-checkbox class="example-margin" [(ngModel)]="nsfw">This is <span class="ucd-nsfw">NSFW</span></mat-checkbox>
+  </div>
+
+</div>
+<div mat-dialog-actions>
+  <div style="width: 100%; display:flex; flex-direction: row;">
+    <div style="display: inline-block; flex: 1; "></div>
+    <button (click)="upload()" mat-flat-button color="primary">UPLOAD</button>
+    <button mat-button mat-dialog-close>CANCEL</button>
+  </div>
+</div>

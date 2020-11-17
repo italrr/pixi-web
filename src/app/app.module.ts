@@ -22,7 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Components
-import { TopbarComponent } from './topbar/topbar.component';
+import { TopbarComponent, UpLoadContentDialogComponent } from './topbar/topbar.component';
 import { ComponentPost } from './post/post.component';
 
 // Views
@@ -69,7 +69,8 @@ const appRoutes: Routes = [
     ViewRegister,
     ViewList,
     ViewGrid,
-    ViewPost
+    ViewPost,
+    UpLoadContentDialogComponent
   ],
   imports: [
     HttpModule,
@@ -97,6 +98,9 @@ const appRoutes: Routes = [
     )
   ],
   providers: [ ContentService, ChannelService, SessionBus ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    UpLoadContentDialogComponent
+  ]
 })
 export class AppModule { }
