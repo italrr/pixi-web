@@ -4,7 +4,7 @@
     <form *ngIf="!logingin" class="rdc-base-inner" [formGroup]="form">
       <mat-form-field style="display: block; width: 100%;">
         <mat-label>Email</mat-label>
-        <input matInput placeholder="user@example.com" value="" [formControl]="emailControl" [errorStateMatcher]="matcher">
+        <input matInput placeholder="user@example.com" value="test@gmail.com" [formControl]="emailControl" [errorStateMatcher]="matcher">
         <mat-error *ngIf="emailControl.hasError('email')">
           Email is invalid
         </mat-error>      
@@ -15,7 +15,7 @@
       
       <mat-form-field style="display: block; width: 100%;">
         <mat-label>Password</mat-label>
-        <input matInput [type]="hidePass ? 'password' : 'text'" value="" [formControl]="passwordControl" [errorStateMatcher]="matcher">
+        <input matInput [type]="hidePass ? 'password' : 'text'" value="12345678" [formControl]="passwordControl" [errorStateMatcher]="matcher">
         <button mat-icon-button matSuffix (click)="hidePass = !hidePass" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePass">
           <mat-icon>{{hidePass ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>

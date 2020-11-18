@@ -62,11 +62,9 @@ export class AuthService {
             me.http.post(environment.endpoints.AUTH_LOGIN, payload, { headers: header }).subscribe(
                 data => {
                     console.log(data);
-                    observer.next(new Status("SUCCESS", StatusValue.SUCCESS, data));
                     observer.complete();
                 },
                 error => {
-                    observer.next(new Status(error, StatusValue.FAILURE));
                     observer.complete();
                 }            
             )
