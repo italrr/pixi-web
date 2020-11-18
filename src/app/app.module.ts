@@ -22,8 +22,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Components
-import { TopbarComponent, UpLoadContentDialogComponent } from './topbar/topbar.component';
+import { TopbarComponent, UpLoadContentDialogComponent, LoginDialogComponent } from './topbar/topbar.component';
 import { ComponentPost } from './post/post.component';
+import { LoadingComponent } from './tools/loading/loading';
 
 // Views
 import { ViewAbout } from './views/about/about.component';
@@ -37,6 +38,8 @@ import { ViewPost } from './views/post/post.component';
 import { ContentService } from './services/content.service';
 import { ChannelService } from './services/channel.service';
 import { SessionBus } from './services/sessionbus.service';
+import { ToolsService } from './tools/tools';
+import { AuthService } from './services/auth.service';
 
 
 const appRoutes: Routes = [
@@ -70,7 +73,9 @@ const appRoutes: Routes = [
     ViewList,
     ViewGrid,
     ViewPost,
-    UpLoadContentDialogComponent
+    UpLoadContentDialogComponent,
+    LoginDialogComponent,
+    LoadingComponent
   ],
   imports: [
     HttpModule,
@@ -97,10 +102,12 @@ const appRoutes: Routes = [
       { enableTracing: true }
     )
   ],
-  providers: [ ContentService, ChannelService, SessionBus ],
+  providers: [ ContentService, ChannelService, SessionBus, ToolsService, AuthService ],
   bootstrap: [AppComponent],
   entryComponents: [
-    UpLoadContentDialogComponent
+    UpLoadContentDialogComponent,
+    LoginDialogComponent,
+    LoadingComponent
   ]
 })
 export class AppModule { }

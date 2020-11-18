@@ -54,3 +54,4 @@ export class ComponentPost {
 		return false
 	}    
 }
+

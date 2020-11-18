@@ -7,15 +7,13 @@
     <div style="display: block; margin: 0px; padding: 0px;">
       <mat-form-field style="display: block; width: 100%;">
         <mat-label>Title</mat-label>
-        <input matInput value="" [formControl]="titleFormControl" [errorStateMatcher]="matcher">
-
+        <input matInput maxlength="40" value="" [formControl]="titleFormControl" [errorStateMatcher]="matcher">
         <mat-error *ngIf="titleFormControl.hasError('required')">
-            Title can't be empty.
+          Title can't be empty.
         </mat-error> 
         <mat-error *ngIf="!titleFormControl.hasError('required') && !titleFormControl.hasError('minLength')">
-            Title must be at least 3 characters long.
-        </mat-error>  
-
+          Title must be at least 3 characters long.
+        </mat-error>      
       </mat-form-field>      
     </div>
     

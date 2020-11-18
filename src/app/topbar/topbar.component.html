@@ -12,7 +12,7 @@
                 <span (click)="onUpload()" matTooltipPosition="below" matTooltip="Upload Image/Video to #{{channel.name}}" class="tb-base-button">
                     <i class="fa fa-upload" aria-hidden="true"></i>
                 </span>        
-                <span (click)="onSortfilter()" matTooltipPosition="below" matTooltip="Sort/Filter Content" class="tb-base-button">
+                <span [matMenuTriggerFor]="filterMenu" matTooltipPosition="below" matTooltip="Sort/Filter Content" class="tb-base-button">
                     <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>
                 </span>    
                 <span (click)="onSwitchView()" matTooltipPosition="below" [matTooltip]="listView ? 'Mosaic View' : 'List View'" class="tb-base-button">
@@ -27,20 +27,123 @@
         <div class="tb-base-middle-channel">
             <div class="tb-base-space-filler"></div>
             <div class="tb-base-middle-center">
-                <span (click)="onSearch()" class="tb-base-button" matTooltipPosition="below" matTooltip="Search">
+                <span [matMenuTriggerFor]="searchMenu" class="tb-base-button" matTooltipPosition="below" matTooltip="Search">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </span>
-                <span (click)="onNotifications()" class="tb-base-button" matTooltipPosition="below" matTooltip="Notifications">
+                <span [matMenuTriggerFor]="notificationMenu" class="tb-base-button" matTooltipPosition="below" matTooltip="Notifications">
                     <i class="fa fa-bell" aria-hidden="true"></i>
                 </span>
-                <span (click)="onMenu()" class="tb-base-button" matTooltipPosition="below" matTooltip="Menu">
+                <span [matMenuTriggerFor]="appMenu" class="tb-base-button" matTooltipPosition="below" matTooltip="Menu">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </span>
-                <span (click)="onUser()" class="tb-base-user-button" matTooltipPosition="below" matTooltip="Log in">
+                <!-- <span (click)="onUser()" class="tb-base-user-button" matTooltipPosition="below" matTooltip="Log in">
                     <i class="fa fa-user" aria-hidden="true"></i> pepper
-                </span>  
+                </span>   -->
             </div>
             <div class="tb-base-space-filler"></div>
         </div>
     </div>        
 </div>
+
+
+<mat-menu #searchMenu="matMenu" [overlapTrigger]="false" class="sm-menu" yPosition="below">
+    <div (click)="$event.stopPropagation()" class="sm-base">
+      <div class="sm-range-base">
+        <span style="margin-left: 16px; margin-top:4px; display:block; font-size: 1.1em;">Search</span>
+        <mat-radio-group class="sm-range" [(ngModel)]="searchRange">
+          <mat-radio-button class="sm-range-opt" value="gl">All Channels</mat-radio-button>
+          <mat-radio-button *ngIf="channel!=null" class="sm-range-opt" value="lo">In #{{ channel.name }}</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <!-- <div class="fm-sep"></div>	 -->
+      <div class="sm-searchbar-base">
+        <mat-form-field class="sm-searchbard-field">
+          <input matInput placeholder="Term, tag, reference, etc." value="">
+        </mat-form-field>
+        <button (click)="onSearch()" class="sm-button red-button" mat-raised-button><i class="fa fa-search" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </mat-menu>
+
+
+<mat-menu #appMenu="matMenu" [overlapTrigger]="false" yPosition="below">
+    <!-- <button mat-menu-item (click)="goToHome()">
+      <span class="dd-icon"><i class="fa fa-home" aria-hidden="true"></i> Home</span>
+    </button>
+   -->
+    <button *ngIf="user != null" (click)="openCreateChannel()" mat-menu-item>
+      <span class="dd-icon">
+        <i class="fa fa-hashtag" aria-hidden="true"></i> Create Channel</span>
+    </button>
+
+    <button *ngIf="user == null" mat-menu-item (click)="onLogin()">
+        <span class="dd-icon">
+          <i class="fa fa-user-circle" aria-hidden="true"></i> Login</span>
+    </button>
+
+    <!-- <button mat-menu-item (click)="goToAbout()">
+      <span class="dd-icon">
+        <i class="fa fa-info-circle" aria-hidden="true"></i> About</span>
+    </button>
+    <span class="dd-sep"></span>
+  
+  
+    <button *ngIf="userData.user == null" mat-menu-item (click)="goToLogin()">
+      <span class="dd-icon">
+        <i class="fa fa-user-circle" aria-hidden="true"></i> Login</span>
+    </button>
+  
+    <button *ngIf="userData.user == null" mat-menu-item (click)="goToRegistration()">
+      <span class="dd-icon">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Register</span>
+    </button>
+    <button *ngIf="userData.user != null" mat-menu-item>
+      <span class="dd-icon">
+        <i class="fa fa-cog" aria-hidden="true"></i> Account</span>
+    </button>
+    <button *ngIf="userData.user != null" mat-menu-item (click)="doLogout()">
+      <span class="dd-icon">
+        <i class="fa fa-user-times" aria-hidden="true"></i> Logout</span>
+    </button> -->
+  
+</mat-menu>
+
+
+<mat-menu #filterMenu="matMenu" [overlapTrigger]="false" yPosition="below">
+    <div (click)="$event.stopPropagation()" class="fm-base">
+  
+      <div class="fm-sort-base">
+        <span style="margin-left: 16px; margin-top:4px; display:block; font-size: 1.1em;">Sort By</span>
+        <mat-radio-group (change)="onSortChange()" class="fm-sort" [(ngModel)]="filter.sort">
+          <mat-radio-button class="fm-sort-opt" value="pn">Post Number</mat-radio-button>
+          <mat-radio-button class="fm-sort-opt" value="pop">Vote Number</mat-radio-button>
+          <mat-radio-button class="fm-sort-opt" value="tr">Trending</mat-radio-button>
+        </mat-radio-group>
+      </div>
+  
+      <div class="fm-sep"></div>
+  
+      <div *ngIf="filter.sort == 'pn' || filter.sort == 'pop'" class="fm-order-base">
+        <span style="margin-left: 16px; margin-top:4px; display:block; font-size: 1.1em;">Order By</span>
+        <mat-radio-group (change)="onOrderChange()" class="fm-order" [(ngModel)]="filter.order">
+          <mat-radio-button class="fm-order-opt" value="asc">Ascending</mat-radio-button>
+          <mat-radio-button class="fm-order-opt" value="des">Descending</mat-radio-button>
+        </mat-radio-group>
+      </div>
+  
+      <div *ngIf="filter.sort == 'tr'" class="fm-order-base">
+        <span style="margin-left: 16px; margin-top:4px; display:block; font-size: 1.1em;">Trend By</span>
+        <mat-radio-group  (change)="onSortChange()" class="fm-order" [(ngModel)]="filter.trend">
+          <mat-radio-button class="fm-order-opt" value="hot">Hot</mat-radio-button>
+          <mat-radio-button class="fm-order-opt" value="tr">Rising</mat-radio-button>
+        </mat-radio-group>
+      </div>
+  
+    </div>
+</mat-menu>
+
+
+<mat-menu #notificationMenu="matMenu" [overlapTrigger]="false" yPosition="below">
+<span>No notifications</span>
+
+</mat-menu>

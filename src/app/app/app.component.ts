@@ -1,4 +1,5 @@
 import { Component,HostListener } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 import { SessionBus } from '../services/sessionbus.service';
 
 @Component({
@@ -9,8 +10,12 @@ import { SessionBus } from '../services/sessionbus.service';
 export class AppComponent {
   title = 'pixi-web';
 
-  constructor(private sessionBus: SessionBus){
+  constructor(private sessionBus: SessionBus, private authService: AuthService){
 
+  }
+
+  ngAfterViewInit(){
+    this.authService.loadUserData();
   }
 
 	@HostListener('scroll', ['$event'])

@@ -8,18 +8,43 @@ import 'rxjs/add/observable/throw';
 import { environment }from "../../environments/environment"; 
 import { User } from '../models/User';
 import { Persona } from '../models/Persona';
+import { SessionBus } from './sessionbus.service';
 
 @Injectable()
-export class ChannelService {
+export class AuthService {
 
     private user: User = null;
     private persona: Persona = null;
     private authToken: string = null;
     private storageName: string = 'pixi.userdata';
     private expirationTime: number = 86400000; // 24h
+    private filter: { order:string, sort: string, trend:'hot' } = {
+		order: 'asc',
+		sort: 'pn',
+		trend: 'hot'
+    };
 
-    constructor(private http: HttpClient) {
 
+    constructor(private http: HttpClient, private sessionBus: SessionBus) {
+        const me = this;
+        sessionBus.listen.subscribe(
+            data => {
+              if(data.event == "FilterChange"){
+                me.filter = data.data;
+              }
+            },
+            error => {
+      
+            }
+        );
+    }
+
+    public getUser(): User {
+        return this.user;
+    }
+
+    public getFilter(): { order:string, sort: string, trend:'hot' } {
+        return this.filter;
     }
   
 	private getPropFrom(name, src) {

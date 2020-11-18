@@ -6,6 +6,7 @@ import { Content } from 'src/app/models/Content';
 import { Channel } from 'src/app/models/Channel';
 import { ChannelService } from 'src/app/services/channel.service';
 import { SessionBus } from 'src/app/services/sessionbus.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -25,11 +26,18 @@ export class ViewChannel {
 	private lastFetchTimeout: number = 0;
 	private from: string | number = 0;
 	private start: number | null = null;
+	private startLast: number = -1;
 	private many: number = 10;
-	private sort: string = 'PN';
 	private routingSubs: Subscription;
 	private channel: Channel;
+	private currentFetch: Promise<any> = null;
 	private maxBuffer: number = 25; // max number of posts on the screen
+	private filter: { order:string, sort: string, trend:'hot' }  = {
+		order: 'des',
+		sort: 'pn',
+		trend: 'hot'
+	};
+  
 
 	constructor(
 		private route: ActivatedRoute,
@@ -37,7 +45,8 @@ export class ViewChannel {
 		private contentService: ContentService,
 		private channelService: ChannelService,
 		private activatedRoute: ActivatedRoute,
-		private sessionBus: SessionBus
+		private sessionBus: SessionBus,
+		private authService: AuthService
 	) { 
 		const me = this;
 		sessionBus.listen.subscribe(
@@ -46,7 +55,15 @@ export class ViewChannel {
 					me.listView = data.data;
 					me.maxBuffer = me.listView ? 25 : 50;
 					me.fetch();
-				}				
+				}			
+				if(data.event == "FilterChange"){
+					if(me.startLast != -1){
+						me.start = me.startLast;
+					}
+					me.contents = [];
+					me.filter = data.data;
+					me.fetch();
+				}     					
 				if(data.event == "Scroll"){
 					let event = data.data;
 					const min = event.target.offsetHeight;
@@ -73,13 +90,15 @@ export class ViewChannel {
 		);
 		this.route.fragment.subscribe((fragment: string) => {
 			if(!fragment){
+				me.startLast = -1;
 				return;
 			}
 			me.contents = [];
 			me.start = parseInt(fragment);
+			me.startLast = me.start;
 			me.fetch();
 		})		
-
+		me.filter = authService.getFilter();
 	}
 
 	ngOnInit() {
@@ -116,9 +135,15 @@ export class ViewChannel {
 
 	public fetch(downwards: boolean = true): Promise<any> {
 		const me = this;
+		if(me.currentFetch){
+			me.currentFetch = me.currentFetch.then(() => {
+				me.fetch(downwards);
+			});
+			return;
+		}
 		// to avoid sudden freezes on the ui, we'll try doing our manipulation of the
 		// list of contents inside a promise
-		return new Promise<any>((resolve, reject) => {
+		let ins = new Promise<any>((resolve, reject) => {
 			if(new Date().getTime() - this.lastFetchTimeout < 200){
 				resolve();
 				return;
@@ -128,19 +153,20 @@ export class ViewChannel {
 				return;
 			}
 			me.lastFetchTimeout = new Date().getTime();
+			const desc = downwards == (me.filter.order == "des");
 			let jumpTo = 0;
 			if(me.start){
 				jumpTo = this.start;
-				me.start -= 5;
+				me.start -= 5 * (desc ? 1 : -1);
 				if(me.start < 1) me.start = 1;
 			}
-			me.from = me.start ? me.start : (downwards ? me.getHighestPostNumber() + 1 : me.getLowestPostNumber() - 1);
-			me.contentService.getMany(me.channel.name, me.from, me.many, downwards, me.sort).subscribe((data: Content[]) => {
+			me.from = me.start ? me.start : (desc ? me.getHighestPostNumber() + 1 : me.getLowestPostNumber() - 1);
+			me.contentService.getMany(me.channel.name, me.from, me.many, desc, me.filter.sort).subscribe((data: Content[]) => {
 				// TODO: implement inverted order for PN
-				switch(me.sort){
-					case 'PN':
+				switch(me.filter.sort){
+					case 'pn':
 						data = data.sort((a: Content, b: Content) => {
-							return downwards ? a.orderId - b.orderId : b.orderId - a.orderId;
+							return desc ? a.orderId - b.orderId : b.orderId - a.orderId;
 						});
 						for(let i = 0; i < data.length; ++i){
 							let index = downwards ? me.contents.length : 0;
@@ -171,6 +197,11 @@ export class ViewChannel {
 			});
 			
 		});
+		ins.then(() => {
+			me.currentFetch = null;
+		});
+		me.currentFetch = ins;
+		return ins;
 	}
 
 	public switchChannel(ch: string) {
